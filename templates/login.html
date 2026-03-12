@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="corporate-light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login   Career Crox CRM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-wrap">
+        <div class="login-card">
+            <div class="brand-mini">Career Crox</div>
+            <h1>Secure Login</h1>
+            <p class="muted-copy">Professional CRM login. This application can run locally, on Render, and with Supabase as the primary database.</p>
+            <form method="POST" class="login-form">
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="manager1">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="demo123">
+                </div>
+                <button class="submit-btn bounceable" type="submit">Login</button>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="login-side panel">
+            <div class="panel-title">Sample Accounts</div>
+            <div class="small-grid two">
+                {% for user in demo_users %}
+                <div class="mini-card">
+                    <div class="mini-title">{{ user['full_name'] }}</div>
+                    <div class="mini-sub">{{ user['designation'] }}</div>
+                    <div class="mini-meta">{{ user['username'] }} / demo123</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mini-note">Preview page: <a href="{{ url_for('preview_page') }}">/preview</a></div>
+        </div>
+    </div>
+<script src="{{ url_for('static', filename='js/themes.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="corporate-light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview   Career Crox CRM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body">
+<div class="preview-wrap">
+    <div class="panel">
+        <div class="panel-title">Career Crox CRM Demo Preview</div>
+        <div class="bullet-grid">
+            <div>Flask + SQLite + HTML/CSS/JS</div>
+            <div>Free-only deployable stack</div>
+            <div>10 sample candidates / JDs / submissions / interviews / tasks</div>
+            <div>Public notes with recruiter + TL notifications</div>
+            <div>Private notes with manager visibility</div>
+            <div>Internal chat and theme manager</div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-title">Sample Logins</div>
+        <div class="small-grid two">
+            {% for user in demo_users %}
+            <div class="mini-card">
+                <div class="mini-title">{{ user['full_name'] }}</div>
+                <div class="mini-sub">{{ user['designation'] }}</div>
+                <div class="mini-meta">{{ user['username'] }} / demo123</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/themes.js') }}"></script>
+</body>
+</html>

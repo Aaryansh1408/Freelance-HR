@@ -1,0 +1,74 @@
+CAREER CROX CRM - CROSS CHAT MASTER CONTEXT
+
+Project type:
+- Free-stack deployable recruitment CRM demo
+- Built with Flask + SQLite + Jinja + HTML/CSS/JS
+- Intended deployment: GitHub -> Render
+
+What is already implemented in this ZIP:
+- Login system with demo users
+- Dashboard
+- Candidates page
+- Candidate detail page
+- Public notes with author name + designation + timestamp
+- Last 5 notes view + expand all notes
+- Personal/private notes
+- Manager can view all personal notes
+- Non-manager users can only view their own personal notes
+- Public note notifications go to candidate recruiter + TL
+- Notifications page
+- Internal chat page
+- JD Centre
+- Interviews page
+- Tasks page
+- Submissions page
+- Admin page (manager only)
+- Module preview pages for dialer / meeting room / learning hub / social / wallet / payout / reports
+- Theme manager with 10 themes
+- Sample data across all core modules
+- Sample workbook(s) in sample_data/
+- Preview page at /preview
+- render.yaml + requirements.txt included
+
+Access logic:
+- manager: can see everything, including all private notes
+- tl / recruiter: can only see their own private notes
+- public notes visible to everyone who can open profile
+- manager notes are effectively private because no non-manager can view them
+
+Note logic:
+- public note stores:
+  - note body
+  - candidate code
+  - author username
+  - timestamp
+- candidate detail page shows author full name, designation, time
+- first 5 notes visible by default
+- expand button shows older notes
+- adding a public note creates notifications for profile recruiter and TL
+
+Demo credentials:
+- manager1 / demo123
+- tlnorth / demo123
+- tleast / demo123
+- rec1 / demo123
+- rec2 / demo123
+- rec3 / demo123
+- rec4 / demo123
+
+How to extend later:
+- connect to Google Sheet after user shares columns
+- map import/export with workbook or Sheets API
+- replace SQLite with hosted Postgres if scale grows
+- add WhatsApp / email integrations later only if needed
+
+Folder structure:
+- app.py
+- requirements.txt
+- render.yaml
+- templates/
+- static/css/style.css
+- static/js/themes.js
+- docs/
+- sample_data/
+- data/ (SQLite db generated automatically)

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="corporate-light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Career Crox CRM{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand-box glassy-card">
+            <div class="brand-mini">Career Crox</div>
+            <div class="brand-title">Recruitment Operations Hub</div>
+            <div class="brand-sub">Professional recruitment CRM with candidate tracking, notes, notifications, themes, and deployment-ready architecture.</div>
+        </div>
+        <nav class="sidebar-nav">
+            {% for label, endpoint, kwargs in sidebar_items %}
+                {% set link = url_for(endpoint, **kwargs) %}
+                {% set active = request.path == link or (endpoint == 'module_page' and request.path.startswith('/module/' ~ kwargs.get('slug'))) %}
+                <a class="nav-item {% if active %}active{% endif %} bounceable" href="{{ link }}"><span>{{ label }}</span></a>
+            {% endfor %}
+        </nav>
+        <div class="theme-panel glassy-card">
+            <div class="theme-heading">Theme Studio</div>
+            <div class="theme-grid">
+                
+                <button class="theme-dot theme-corporate-light active-theme" data-theme="corporate-light" title="Corporate Light"></button>
+                <button class="theme-dot theme-ocean" data-theme="ocean" title="Ocean"></button>
+                <button class="theme-dot theme-rose" data-theme="rose" title="Rose"></button>
+                <button class="theme-dot theme-mint" data-theme="mint" title="Mint"></button>
+                <button class="theme-dot theme-sunset" data-theme="sunset" title="Sunset"></button>
+                <button class="theme-dot theme-lavender" data-theme="lavender" title="Lavender"></button>
+                <button class="theme-dot theme-dark-pro" data-theme="dark-pro" title="Dark Pro"></button>
+                <button class="theme-dot theme-dark-midnight" data-theme="dark-midnight" title="Dark Midnight"></button>
+                <button class="theme-dot theme-dark-vscode" data-theme="dark-vscode" title="Dark VSCode"></button>
+                <button class="theme-dot theme-silver-pro" data-theme="silver-pro" title="Silver Pro"></button>
+                <button class="theme-dot theme-frost" data-theme="frost" title="Frost Glass"></button>
+                <button class="theme-dot theme-aurora" data-theme="aurora" title="Aurora Glass"></button>
+                <button class="theme-dot theme-ivory" data-theme="ivory" title="Ivory Frost"></button>
+                <button class="theme-dot theme-pearl" data-theme="pearl" title="Pearl Mist"></button>
+                <button class="theme-dot theme-alpine-dawn" data-theme="alpine-dawn" title="Alpine Dawn"></button>
+                <button class="theme-dot theme-alpine-lake" data-theme="alpine-lake" title="Alpine Lake"></button>
+                <button class="theme-dot theme-alpine-river" data-theme="alpine-river" title="Alpine River"></button>
+                <button class="theme-dot theme-alpine-snow" data-theme="alpine-snow" title="Alpine Snow"></button>
+                <button class="theme-dot theme-skyline" data-theme="skyline" title="Skyline Glass"></button>
+                <button class="theme-dot theme-graphite-frost" data-theme="graphite-frost" title="Graphite Frost"></button>
+            
+            <div class="theme-labels"><span>20 themes</span><span>13 light / 3 dark / 4 scenic</span></div>
+        </div>
+    </aside>
+    <main class="main-wrap">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="topbar-title">{% block page_title %}Recruitment Operations Hub{% endblock %}</div>
+                <div class="topbar-sub">{% block page_subtitle %}Professional CRM with Render deployment and Supabase database support{% endblock %}</div>
+            </div>
+            <div class="topbar-center">
+                <form class="search-box glassy-card" method="GET" action="{{ url_for('candidates') }}">
+                    <input type="text" name="q" placeholder="Search candidate, JD code, status, location..." value="{{ request.args.get('q', '') }}">
+                    <button class="ghost-btn bounceable" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="top-action-wrap">
+                    {% set on_dashboard = request.path == url_for('dashboard') %}
+                    {% set on_candidates = request.path == url_for('candidates') %}
+                    {% set on_tasks = request.path == url_for('tasks') %}
+                    {% set on_jds = request.path == url_for('jds') %}
+                    {% set on_interviews = request.path == url_for('interviews') %}
+                    {% set on_social = request.path == url_for('module_page', slug='social-career-crox') %}
+                    {% set on_meeting = request.path == url_for('module_page', slug='meeting-room') %}
+                    {% if on_dashboard %}
+                    <button class="add-profile-btn bounceable" type="button" id="addMenuButton">Add</button>
+                    <div class="add-menu glassy-card" id="addMenuPanel">
+                        <a href="#" data-demo-modal="candidate-modal">  Add Candidate</a>
+                        <a href="#" data-demo-modal="task-modal">  Add Task</a>
+                        <a href="#" data-demo-modal="jd-modal">  Add JD</a>
+                        <a href="#" data-demo-modal="interview-modal">  Add Interview</a>
+                        <a href="#" data-demo-modal="post-modal">  Schedule Post</a>
+                        <a href="#" data-demo-modal="meeting-modal">  Create Meeting</a>
+                    </div>
+                    {% elif on_candidates %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="candidate-modal">Add Candidate</button>
+                    {% elif on_tasks %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="task-modal">Add Task</button>
+                    {% elif on_jds %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="jd-modal">Add JD</button>
+                    {% elif on_interviews %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="interview-modal">Add Interview</button>
+                    {% elif on_social %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="post-modal">Schedule Post</button>
+                    {% elif on_meeting %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="meeting-modal">Create Meeting</button>
+                    {% else %}
+                    <button class="add-profile-btn bounceable" type="button" data-demo-modal="candidate-modal">Quick Add</button>
+                    {% endif %}
+                </div>
+                <a class="top-pill bounceable" href="{{ url_for('notifications_page') }}">Notifications <span class="pill-count">{{ unread_notifications }}</span></a>
+                <a class="top-pill bounceable" href="{{ url_for('chat_page') }}">Chat</a>
+                {% if current_user_data %}
+                <div class="user-chip glassy-card">
+                    <div class="user-name">{{ current_user_data['full_name'] }}</div>
+                    <div class="user-role">{{ current_user_data['designation'] }}</div>
+                    {% if session.get('impersonator') %}<div class="impersonation-line">Manager view as team member</div>{% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </header>
+        <section class="page-scroll">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+</div>
+
+<div class="demo-modal-shell" id="demoModalShell">
+  <div class="demo-modal glassy-card" id="demoModalBox">
+    <div class="demo-modal-top"><div class="panel-title" id="demoModalTitle">Quick Add</div><button class="ghost-btn" id="demoModalClose" type="button">Close</button></div>
+    <div class="demo-modal-body" id="demoModalBody"></div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/themes.js') }}"></script>
+<script>
+const addBtn = document.getElementById('addMenuButton');
+const addPanel = document.getElementById('addMenuPanel');
+if(addBtn && addPanel){
+  addBtn.addEventListener('click', (e)=>{ e.stopPropagation(); addPanel.classList.toggle('show'); });
+  document.addEventListener('click', (e)=>{ if(!addPanel.contains(e.target) && e.target !== addBtn){ addPanel.classList.remove('show'); }});
+}
+
+function wireSelectAll(context=document){
+  context.querySelectorAll('.select-all').forEach(master=>{
+    if(master.dataset.bound) return;
+    master.dataset.bound = '1';
+    master.addEventListener('change', ()=>{
+      const table = master.closest('table');
+      if(!table) return;
+      table.querySelectorAll('.row-check').forEach(cb => cb.checked = master.checked);
+      table.querySelectorAll('tbody tr').forEach(tr => tr.classList.toggle('selected-row', master.checked));
+      document.dispatchEvent(new CustomEvent('rowSelectionChanged'));
+    });
+  });
+  context.querySelectorAll('.row-check').forEach(cb=>{
+    if(cb.dataset.bound) return;
+    cb.dataset.bound='1';
+    cb.addEventListener('change', ()=>{
+      const tr = cb.closest('tr');
+      if(tr) tr.classList.toggle('selected-row', cb.checked);
+      document.dispatchEvent(new CustomEvent('rowSelectionChanged'));
+    });
+  });
+}
+wireSelectAll(document);
+
+const DEMO_FORMS = {
+  'candidate-modal': {title:'Add Candidate', html:`<form method="POST" action="{{ url_for('add_candidate') }}" class="note-form"><div class="field"><label>Full name</label><input name="full_name" placeholder="Candidate name" required></div><div class="field"><label>Phone</label><input name="phone" placeholder="10 digit phone" required></div><div class="field"><label>Location</label><input name="location" placeholder="City"></div><div class="field"><label>Experience</label><input name="experience" placeholder="1.5 years"></div><div class="field"><label>Status</label><input name="status" placeholder="Applied"></div><div class="field"><label>Recruiter</label><select name="recruiter_username">{% for r in all_recruiters %}<option value="{{ r['username'] }}">{{ r['full_name'] }} ({{ r['username'] }})</option>{% endfor %}</select></div><div class="field"><label>JD</label><select name="jd_code"><option value="">Select JD</option>{% for jd in all_jds %}<option value="{{ jd['code'] }}">{{ jd['code'] }} - {{ jd['title'] }}</option>{% endfor %}</select></div><div class="field"><label>Qualification</label><input name="qualification" placeholder="Bachelor's"></div><button class="submit-btn bounceable" type="submit">Save Candidate</button></form>`},
+  'task-modal': {title:'Add Task', html:`<form method="POST" action="{{ url_for('add_task') }}" class="note-form"><div class="field"><label>Task title</label><input name="title" placeholder="Task title" required></div><div class="field"><label>Description</label><textarea name="description" placeholder="Task details"></textarea></div><div class="field"><label>Assigned to</label><select name="assigned_to">{% for u in all_assignees %}<option value="{{ u['username'] }}">{{ u['full_name'] }} - {{ u['designation'] }}</option>{% endfor %}</select></div><div class="field"><label>Priority</label><select name="priority"><option>High</option><option selected>Medium</option><option>Low</option></select></div><div class="field"><label>Status</label><select name="status"><option selected>Open</option><option>Pending</option><option>Closed</option></select></div><div class="field"><label>Due date and time</label><input type="datetime-local" name="due_at" required></div><button class="submit-btn bounceable" type="submit">Save Task</button></form>`},
+  'jd-modal': {title:'Add JD', html:`<form method="POST" action="{{ url_for('add_jd') }}" class="note-form"><div class="field"><label>JD code</label><input name="code" placeholder="JD-111" required></div><div class="field"><label>Title</label><input name="title" placeholder="Role title" required></div><div class="field"><label>Location</label><input name="location" placeholder="City"></div><div class="field"><label>Experience required</label><input name="experience_required" placeholder="0-2 years"></div><div class="field"><label>Payout</label><input name="payout" type="number" placeholder="12000"></div><div class="field"><label>Payout days</label><input name="payout_days" type="number" placeholder="60"></div><div class="field"><label>Status</label><select name="status"><option selected>Open</option><option>Paused</option><option>Closed</option></select></div><button class="submit-btn bounceable" type="submit">Save JD</button></form>`},
+  'interview-modal': {title:'Add Interview', html:`<form method="POST" action="{{ url_for('add_interview') }}" class="note-form"><div class="field"><label>Candidate</label><select name="candidate_code">{% for c in all_candidates_basic %}<option value="{{ c['code'] }}">{{ c['full_name'] }} ({{ c['code'] }})</option>{% endfor %}</select></div><div class="field"><label>JD</label><select name="jd_code">{% for jd in all_jds %}<option value="{{ jd['code'] }}">{{ jd['code'] }} - {{ jd['title'] }}</option>{% endfor %}</select></div><div class="field"><label>Stage</label><input name="stage" placeholder="Screening"></div><div class="field"><label>Schedule</label><input type="datetime-local" name="scheduled_at" required></div><div class="field"><label>Status</label><select name="status"><option selected>Scheduled</option><option>Confirmed</option><option>Pending</option><option>Completed</option><option>Closed</option></select></div><button class="submit-btn bounceable" type="submit">Save Interview</button></form>`},
+  'post-modal': {title:'Schedule Post', html:`<div class="field"><label>Platform</label><input placeholder="LinkedIn"></div><div class="field"><label>Caption</label><textarea placeholder="Post content"></textarea></div><button class="submit-btn bounceable" type="button" onclick="demoSave('Scheduling UI preview only.')">Preview</button>`},
+  'meeting-modal': {title:'Create Meeting', html:`<div class="field"><label>Meeting title</label><input placeholder="North team sync"></div><div class="field"><label>Invite users</label><input placeholder="rec1, rec2, tlnorth"></div><button class="submit-btn bounceable" type="button" onclick="demoSave('Meeting room UI preview only.')">Preview</button>`}
+};
+const demoShell=document.getElementById('demoModalShell');
+const demoBox=document.getElementById('demoModalBox');
+const demoTitle=document.getElementById('demoModalTitle');
+const demoBody=document.getElementById('demoModalBody');
+const demoClose=document.getElementById('demoModalClose');
+function openDemoModal(key){ const d=DEMO_FORMS[key]; if(!d) return; demoTitle.textContent=d.title; demoBody.innerHTML=d.html; demoShell.classList.add('show'); }
+function demoSave(msg){ alert(msg); }
+window.demoSave = demoSave;
+document.querySelectorAll('[data-demo-modal]').forEach(el=> el.addEventListener('click', (e)=>{ e.preventDefault(); openDemoModal(el.dataset.demoModal); if(addPanel) addPanel.classList.remove('show'); }));
+if(demoClose) demoClose.addEventListener('click', ()=> demoShell.classList.remove('show'));
+if(demoShell) demoShell.addEventListener('click', (e)=>{ if(e.target===demoShell) demoShell.classList.remove('show'); });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
